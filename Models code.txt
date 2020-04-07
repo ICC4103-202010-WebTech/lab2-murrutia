@@ -1,0 +1,41 @@
+
+class Customer < TicketsApp
+  has_one :ticketorder
+end
+
+class Event < TicketsApp
+  has_many :tickets, dependent: :destroy
+  has_one :eventvenue
+
+end
+class Ticket < TicketsApp
+  belongs_to :event
+  has_one :customer
+end
+
+class TicketOrder < TicketsApp
+  belongs_to :customer
+  has_many :tickets
+end
+
+class EventVenue < TicketsApp
+  has_many :events, dependent: :destroy
+
+end
+---------------------------------------
+
+class CreateTickets < ActiveRecord::Migration[5.0]
+  def change
+    create_table :events do |t|
+      t.string :name
+      t.string :place
+      t.timestamps
+    end
+ 
+    create_table :tickets do |t|
+      t.belongs_to :event
+      t.datetime :event_date
+      t.timestamps
+    end
+  end
+end
